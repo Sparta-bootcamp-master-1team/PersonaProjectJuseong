@@ -9,7 +9,10 @@ import UIKit
 
 class MainViewController: UIViewController {
 
-    let mainView = MainView()
+    private let mainView = MainView()
+    
+    private let dataService = DataService()
+    private var books: [Attributes] = []
     
     override func loadView() {
         self.view = mainView
@@ -18,8 +21,26 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadBooks()
+    }
+    
+    private func loadBooks() {
+        dataService.loadBooks { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let books):
+                self.books = books
+                updateUI()
+            case .failure(_):
+                break
+            }
+        }
+    }
+    
+    private func updateUI(seriseNumber: Int = 0) {
+        mainView.configure(book: books[seriseNumber], seriesNumber: seriseNumber + 1)
     }
 
 
 }
-

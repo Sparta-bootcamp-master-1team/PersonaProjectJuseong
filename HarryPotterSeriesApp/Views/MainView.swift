@@ -10,9 +10,9 @@ import UIKit
 import SnapKit
 
 class MainView: UIView {
+    
     private let bookTitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Harry Potter and the Philosopher’s Stone"
         label.font = .systemFont(ofSize: 24, weight: .bold)
         label.textColor = .black
         label.textAlignment = .center
@@ -22,7 +22,6 @@ class MainView: UIView {
     
     private let seriesNumberButton: UIButton = {
         let button = UIButton()
-        button.setTitle("1", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         return button
@@ -63,4 +62,10 @@ class MainView: UIView {
             $0.width.equalTo(seriesNumberButton.snp.height)
         }
     }
+    
+    func configure(book: Attributes, seriesNumber: Int) {
+        bookTitleLabel.text = book.title
+        seriesNumberButton.setTitle("\(seriesNumber)", for: .normal)
+    }
+    
 }
