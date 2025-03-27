@@ -32,8 +32,19 @@ final class MainViewController: UIViewController {
             case .success(let books):
                 self.books = books
                 updateUI()
-            case .failure(_):
-                break
+            case .failure(let error):
+                var errorMessage = ""
+                
+                if let dataError = error as? DataService.DataError {
+                    switch dataError {
+                    case .fileNotFound:
+                        errorMessage = "Json 파일을 찾을 수 없습니다."
+                    case .parsingFailed:
+                        errorMessage = "데이터 변환에 실패하였습니다."
+                    }
+                }
+                
+                DispatchQueue.main.async { self.showAlert(message: errorMessage) }
             }
         }
     }
@@ -42,5 +53,13 @@ final class MainViewController: UIViewController {
         mainView.configure(book: books[seriseNumber], seriesNumber: seriseNumber + 1)
     }
 
+    private func showAlert(message: String) {
+        view = UIView()
+        let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "확인", style: .default, handler: {_ in
+            exit(0)
+        }))
+        self.present(alert, animated: true)
+    }
 
 }
