@@ -177,6 +177,22 @@ final class MainView: UIView {
         return label
     }()
     
+    // MARK: - Chapter UI
+    private lazy var chapterStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [chapterTitleLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private let chapterTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Chapter"
+        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -237,6 +253,13 @@ final class MainView: UIView {
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
+        
+        self.addSubview(chapterStackView)
+        chapterStackView.snp.makeConstraints {
+            $0.top.equalTo(summaryStackView.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
     }
     
     func configure(book: Attributes, seriesNumber: Int) {
@@ -249,6 +272,19 @@ final class MainView: UIView {
         pagesLabel.text = book.pages.description
         dedicationLabel.text = book.dedication
         summaryLabel.text = book.summary
+        
+        for chapter in book.chapters {
+            let chapterLabel = createChapterLabel()
+            chapterLabel.text = chapter.title
+            chapterStackView.addArrangedSubview(chapterLabel)
+        }
     }
     
+    private func createChapterLabel() -> UILabel {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }
 }
