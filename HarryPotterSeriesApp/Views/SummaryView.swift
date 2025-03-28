@@ -44,8 +44,9 @@ final class SummaryView: UIView {
         return button
     }()
     
-    private var isExpanded: Bool = false {
-        didSet { updateSummary() }
+    private var isExpanded: Bool {
+        get { UserDefaults.standard.bool(forKey: "SummaryViewIsExpanded") }
+        set { UserDefaults.standard.set(newValue, forKey: "SummaryViewIsExpanded") }
     }
     
     private var fullSummary: String = ""
@@ -80,6 +81,7 @@ final class SummaryView: UIView {
     @objc
     private func toggleButtonTapped() {
         isExpanded.toggle()
+        updateSummary()
     }
     
     private func updateSummary() {
@@ -91,11 +93,11 @@ final class SummaryView: UIView {
         fullSummary = summary
         
         if summary.count < 450 {
-            summaryLabel.text = fullSummary
             toggleContainerView.isHidden = true
+            summaryLabel.text = fullSummary
         } else {
-            summaryLabel.text = "\(fullSummary.prefix(450))..."
             toggleContainerView.isHidden = false
+            updateSummary()
         }
     }
 }
