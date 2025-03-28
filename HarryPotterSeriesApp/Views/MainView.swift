@@ -21,54 +21,8 @@ final class MainView: UIView {
     private let contentView = UIView()
     
     private let bookDetailView = BookDetailView()
-    
-    // MARK: - Dedication UI
-    private lazy var dedicationStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [dedicationTitleLabel, dedicationLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    private let dedicationTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Dedication"
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.textColor = .black
-        return label
-    }()
-    
-    private let dedicationLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .darkGray
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    // MARK: - Summary UI
-    private lazy var summaryStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [summaryTitleLabel, summaryLabel])
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        return stackView
-    }()
-    
-    private let summaryTitleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Summary"
-        label.font = .systemFont(ofSize: 18, weight: .bold)
-        label.textColor = .black
-        return label
-    }()
-    
-    private let summaryLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .darkGray
-        label.numberOfLines = 0
-        return label
-    }()
+    private let dedicationView = DedicationView()
+    private let summaryView = SummaryView()
     
     // MARK: - Chapter UI
     private lazy var chapterStackView: UIStackView = {
@@ -102,7 +56,7 @@ final class MainView: UIView {
         
         [bookHeaderView, scrollView].forEach { self.addSubview($0) }
         scrollView.addSubview(contentView)
-        [bookDetailView].forEach { contentView.addSubview($0) }
+        [bookDetailView, dedicationView, summaryView].forEach { contentView.addSubview($0) }
         
         bookHeaderView.snp.makeConstraints {
             $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
@@ -125,24 +79,21 @@ final class MainView: UIView {
             $0.trailing.equalToSuperview().offset(-20)
         }
         
-        
-        contentView.addSubview(dedicationStackView)
-        dedicationStackView.snp.makeConstraints {
+        dedicationView.snp.makeConstraints {
             $0.top.equalTo(bookDetailView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
         
-        contentView.addSubview(summaryStackView)
-        summaryStackView.snp.makeConstraints {
-            $0.top.equalTo(dedicationStackView.snp.bottom).offset(24)
+        summaryView.snp.makeConstraints {
+            $0.top.equalTo(dedicationView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
         
         contentView.addSubview(chapterStackView)
         chapterStackView.snp.makeConstraints {
-            $0.top.equalTo(summaryStackView.snp.bottom).offset(24)
+            $0.top.equalTo(summaryView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview()
@@ -158,8 +109,8 @@ final class MainView: UIView {
             released: book.releaseDate,
             pages: book.pages
         )
-        dedicationLabel.text = book.dedication
-        summaryLabel.text = book.summary
+        dedicationView.configure(dedication: book.dedication)
+        summaryView.configure(summary: book.summary)
         
         for chapter in book.chapters {
             let chapterLabel = createChapterLabel()
