@@ -28,106 +28,154 @@ final class MainView: UIView {
     }()
     
     // MARK: - Detail UI
-     private lazy var containerStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [coverImageView, detailStackView])
-         stackView.axis = .horizontal
-         stackView.spacing = 10
-         stackView.alignment = .top
-         return stackView
-     }()
-     
-     private let coverImageView: UIImageView = {
-         let imageView = UIImageView()
-         imageView.contentMode = .scaleAspectFill
-         return imageView
-     }()
-     
-     private lazy var detailStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [
-             detailBookTitleLabel, authorStackView, releasedStackView, pagesStackView
-         ])
-         stackView.axis = .vertical
-         stackView.spacing = 8
-         stackView.alignment = .leading
-         return stackView
-     }()
-     
-     private let detailBookTitleLabel: UILabel = {
-         let label = UILabel()
-         label.font = .systemFont(ofSize: 20, weight: .bold)
-         label.textColor = .black
-         label.numberOfLines = 0
-         return label
-     }()
-     
-     // MARK: - Author UI
-     private lazy var authorStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [authorTitleLabel, authorLabel])
-         stackView.axis = .horizontal
-         stackView.spacing = 5
-         return stackView
-     }()
-     
-     private let authorTitleLabel: UILabel = {
-         let label = UILabel()
-         label.text = "Author"
-         label.font = .systemFont(ofSize: 16, weight: .bold)
-         label.textColor = .black
-         return label
-     }()
-     
-     private let authorLabel: UILabel = {
-         let label = UILabel()
-         label.font = .systemFont(ofSize: 18, weight: .regular)
-         label.textColor = .darkGray
-         return label
-     }()
-     
-     // MARK: - Released UI
-     private lazy var releasedStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [releasedTitleLabel, releasedLabel])
-         stackView.axis = .horizontal
-         stackView.spacing = 5
-         return stackView
-     }()
-     
-     private let releasedTitleLabel: UILabel = {
-         let label = UILabel()
-         label.text = "Released"
-         label.font = .systemFont(ofSize: 14, weight: .bold)
-         label.textColor = .black
-         return label
-     }()
-     
-     private let releasedLabel: UILabel = {
-         let label = UILabel()
-         label.font = .systemFont(ofSize: 14, weight: .regular)
-         label.textColor = .gray
-         return label
-     }()
-     
-     // MARK: - Pages UI
-     private lazy var pagesStackView: UIStackView = {
-         let stackView = UIStackView(arrangedSubviews: [pagesTitleLabel, pagesLabel])
-         stackView.axis = .horizontal
-         stackView.spacing = 5
-         return stackView
-     }()
-     
-     private let pagesTitleLabel: UILabel = {
-         let label = UILabel()
-         label.text = "Pages"
-         label.font = .systemFont(ofSize: 14, weight: .bold)
-         label.textColor = .black
-         return label
-     }()
-     
-     private let pagesLabel: UILabel = {
-         let label = UILabel()
-         label.font = .systemFont(ofSize: 14, weight: .regular)
-         label.textColor = .gray
-         return label
-     }()
+    private lazy var containerStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [coverImageView, detailStackView])
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        stackView.alignment = .top
+        return stackView
+    }()
+    
+    private let coverImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        return imageView
+    }()
+    
+    private lazy var detailStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [
+            detailBookTitleLabel, authorStackView, releasedStackView, pagesStackView
+        ])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        stackView.alignment = .leading
+        return stackView
+    }()
+    
+    private let detailBookTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .black
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // MARK: - Author UI
+    private lazy var authorStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [authorTitleLabel, authorLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        return stackView
+    }()
+    
+    private let authorTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Author"
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let authorLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 18, weight: .regular)
+        label.textColor = .darkGray
+        return label
+    }()
+    
+    // MARK: - Released UI
+    private lazy var releasedStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [releasedTitleLabel, releasedLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        return stackView
+    }()
+    
+    private let releasedTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Released"
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let releasedLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .gray
+        return label
+    }()
+    
+    // MARK: - Pages UI
+    private lazy var pagesStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [pagesTitleLabel, pagesLabel])
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        return stackView
+    }()
+    
+    private let pagesTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Pages"
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let pagesLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .gray
+        return label
+    }()
+    
+    // MARK: - Dedication UI
+    private lazy var dedicationStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [dedicationTitleLabel, dedicationLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private let dedicationTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Dedication"
+        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let dedicationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // MARK: - Summary UI
+    private lazy var summaryStackView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [summaryTitleLabel, summaryLabel])
+        stackView.axis = .vertical
+        stackView.spacing = 8
+        return stackView
+    }()
+    
+    private let summaryTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Summary"
+        label.font = .systemFont(ofSize: 18, weight: .bold)
+        label.textColor = .black
+        return label
+    }()
+    
+    private let summaryLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }()
     
     
     override init(frame: CGRect) {
@@ -175,6 +223,20 @@ final class MainView: UIView {
             $0.width.equalTo(100)
             $0.height.equalTo(coverImageView.snp.width).multipliedBy(1.5)
         }
+        
+        self.addSubview(dedicationStackView)
+        dedicationStackView.snp.makeConstraints {
+            $0.top.equalTo(containerStackView.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+        self.addSubview(summaryStackView)
+        summaryStackView.snp.makeConstraints {
+            $0.top.equalTo(dedicationStackView.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
     }
     
     func configure(book: Attributes, seriesNumber: Int) {
@@ -185,6 +247,8 @@ final class MainView: UIView {
         authorLabel.text = book.author
         releasedLabel.text = book.releaseDate
         pagesLabel.text = book.pages.description
+        dedicationLabel.text = book.dedication
+        summaryLabel.text = book.summary
     }
     
 }
