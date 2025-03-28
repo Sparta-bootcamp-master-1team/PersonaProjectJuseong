@@ -11,7 +11,8 @@ import SnapKit
 final class SummaryView: UIView {
     
     private lazy var summaryStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [summaryTitleLabel, summaryLabel])
+        let stackView = UIStackView(
+            arrangedSubviews: [summaryTitleLabel, summaryLabel, toggleContainerView])
         stackView.axis = .vertical
         stackView.spacing = 8
         return stackView
@@ -33,9 +34,26 @@ final class SummaryView: UIView {
         return label
     }()
     
+    private let toggleContainerView = UIView()
+    
+    private let toggleButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("더 보기", for: .normal)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .regular)
+        return button
+    }()
+    
+    private var isExpanded: Bool = false {
+        didSet { updateSummary() }
+    }
+    
+    private var fullSummary: String = ""
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        configureToggleButton()
     }
     
     required init?(coder: NSCoder) {
@@ -44,14 +62,41 @@ final class SummaryView: UIView {
     
     private func setupUI() {
         self.addSubview(summaryStackView)
+        toggleContainerView.addSubview(toggleButton)
         
         summaryStackView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        
+        toggleButton.snp.makeConstraints {
+            $0.top.trailing.bottom.equalToSuperview()
+        }
     }
     
+    private func configureToggleButton() {
+        toggleButton.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
+    }
+    
+    @objc
+    private func toggleButtonTapped() {
+        isExpanded.toggle()
+    }
+    
+    private func updateSummary() {
+        summaryLabel.text = isExpanded ? fullSummary : String(fullSummary.prefix(450)) + "..."
+        toggleButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
+    }
+        
     func configure(summary: String) {
-        summaryLabel.text = summary
+        fullSummary = summary
+        
+        if summary.count < 450 {
+            summaryLabel.text = fullSummary
+            toggleContainerView.isHidden = true
+        } else {
+            summaryLabel.text = "\(fullSummary.prefix(450))..."
+            toggleContainerView.isHidden = false
+        }
     }
 }
 
