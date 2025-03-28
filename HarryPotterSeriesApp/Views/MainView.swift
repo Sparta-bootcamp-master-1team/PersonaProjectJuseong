@@ -27,6 +27,14 @@ final class MainView: UIView {
         return button
     }()
     
+    private let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        return scrollView
+    }()
+    
+    private let contentView = UIView()
+    
     // MARK: - Detail UI
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [coverImageView, detailStackView])
@@ -228,11 +236,23 @@ final class MainView: UIView {
             $0.width.equalTo(seriesNumberButton.snp.height)
         }
         
-        self.addSubview(containerStackView)
+        self.addSubview(scrollView)
+        scrollView.snp.makeConstraints {
+            $0.top.equalTo(seriesNumberButton.snp.bottom).offset(16)
+            $0.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
+        }
+        
+        scrollView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.edges.equalTo(scrollView.contentLayoutGuide)
+            $0.width.equalTo(scrollView.frameLayoutGuide)
+        }
+        
+        contentView.addSubview(containerStackView)
         containerStackView.snp.makeConstraints {
-            $0.leading.equalTo(self.safeAreaLayoutGuide.snp.leading).offset(20)
-            $0.trailing.equalTo(self.safeAreaLayoutGuide.snp.trailing).offset(-20)
-            $0.top.equalTo(seriesNumberButton.snp.bottom).offset(10)
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
         }
         
         coverImageView.snp.makeConstraints {
@@ -240,25 +260,26 @@ final class MainView: UIView {
             $0.height.equalTo(coverImageView.snp.width).multipliedBy(1.5)
         }
         
-        self.addSubview(dedicationStackView)
+        contentView.addSubview(dedicationStackView)
         dedicationStackView.snp.makeConstraints {
             $0.top.equalTo(containerStackView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
         
-        self.addSubview(summaryStackView)
+        contentView.addSubview(summaryStackView)
         summaryStackView.snp.makeConstraints {
             $0.top.equalTo(dedicationStackView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
         }
         
-        self.addSubview(chapterStackView)
+        contentView.addSubview(chapterStackView)
         chapterStackView.snp.makeConstraints {
             $0.top.equalTo(summaryStackView.snp.bottom).offset(24)
             $0.leading.equalToSuperview().offset(20)
             $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalToSuperview()
         }
     }
     
