@@ -129,6 +129,54 @@ final class MainView: UIView {
          return label
      }()
     
+    // MARK: - Dedication UI
+        private lazy var dedicationStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [dedicationTitleLabel, dedicationLabel])
+            stackView.axis = .vertical
+            stackView.spacing = 8
+            return stackView
+        }()
+        
+        private let dedicationTitleLabel: UILabel = {
+            let label = UILabel()
+            label.text = "Dedication"
+            label.font = .systemFont(ofSize: 18, weight: .bold)
+            label.textColor = .black
+            return label
+        }()
+        
+        private let dedicationLabel: UILabel = {
+            let label = UILabel()
+            label.font = .systemFont(ofSize: 14, weight: .regular)
+            label.textColor = .darkGray
+            label.numberOfLines = 0
+            return label
+        }()
+        
+        // MARK: - Summary UI
+        private lazy var summaryStackView: UIStackView = {
+            let stackView = UIStackView(arrangedSubviews: [summaryTitleLabel, summaryLabel])
+            stackView.axis = .vertical
+            stackView.spacing = 8
+            return stackView
+        }()
+        
+        private let summaryTitleLabel: UILabel = {
+            let label = UILabel()
+            label.text = "Summary"
+            label.font = .systemFont(ofSize: 18, weight: .bold)
+            label.textColor = .black
+            return label
+        }()
+        
+        private let summaryLabel: UILabel = {
+            let label = UILabel()
+            label.font = .systemFont(ofSize: 14, weight: .regular)
+            label.textColor = .darkGray
+            label.numberOfLines = 0
+            return label
+        }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -175,6 +223,20 @@ final class MainView: UIView {
             $0.width.equalTo(100)
             $0.height.equalTo(coverImageView.snp.width).multipliedBy(1.5)
         }
+        
+        self.addSubview(dedicationStackView)
+        dedicationStackView.snp.makeConstraints {
+            $0.top.equalTo(containerStackView.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
+        
+        self.addSubview(summaryStackView)
+        summaryStackView.snp.makeConstraints {
+            $0.top.equalTo(dedicationStackView.snp.bottom).offset(24)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+        }
     }
     
     func configure(book: Attributes, seriesNumber: Int) {
@@ -185,6 +247,8 @@ final class MainView: UIView {
         authorLabel.text = book.author
         releasedLabel.text = book.releaseDate
         pagesLabel.text = book.pages.description
+        dedicationLabel.text = book.dedication
+        summaryLabel.text = book.summary
     }
     
 }
