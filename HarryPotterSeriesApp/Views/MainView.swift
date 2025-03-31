@@ -11,7 +11,7 @@ import SnapKit
 
 final class MainView: UIView {
     
-    private let bookHeaderView = BookHeaderView()
+    private(set) var bookHeaderView = BookHeaderView()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -82,8 +82,8 @@ final class MainView: UIView {
         }
     }
     
-    func configure(book: Attributes, seriesNumber: Int) {
-        bookHeaderView.configure(title: book.title, serise: seriesNumber)
+    func configure(book: Attributes, seriesNumber: Int, seriesCount: Int = 0) {
+        bookHeaderView.configure(title: book.title, series: seriesNumber, count: seriesCount)
         bookDetailView.configure(
             coverImageName: "harrypotter" + "\(seriesNumber)",
             title: book.title,
@@ -92,7 +92,7 @@ final class MainView: UIView {
             pages: book.pages
         )
         dedicationView.configure(dedication: book.dedication)
-        summaryView.configure(summary: book.summary)
+        summaryView.configure(summary: book.summary, series: seriesNumber)
         chapterView.configure(chapters: book.chapters.map { $0.title })
     }
 }

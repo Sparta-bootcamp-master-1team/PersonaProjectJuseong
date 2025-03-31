@@ -25,6 +25,8 @@ final class ChapterView: UIView {
         return label
     }()
     
+    private var chapterLabels: [UILabel] = []
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -43,9 +45,13 @@ final class ChapterView: UIView {
     }
     
     func configure(chapters: [String]) {
+        chapterLabels.forEach { $0.removeFromSuperview() }
+        chapterLabels.removeAll()
+        
         for chapter in chapters {
             let chapterLabel = createChapterLabel()
             chapterLabel.text = chapter
+            chapterLabels.append(chapterLabel)
             chapterStackView.addArrangedSubview(chapterLabel)
         }
     }

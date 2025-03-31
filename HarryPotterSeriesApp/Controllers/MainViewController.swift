@@ -20,8 +20,8 @@ final class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         loadBooks()
+        configureDelegate()
     }
     
     private func loadBooks() {
@@ -31,7 +31,7 @@ final class MainViewController: UIViewController {
             switch result {
             case .success(let books):
                 self.books = books
-                updateUI()
+                configureUI()
             case .failure(let error):
                 var errorMessage = ""
                 
@@ -49,8 +49,12 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func updateUI(seriseNumber: Int = 0) {
-        mainView.configure(book: books[seriseNumber], seriesNumber: seriseNumber + 1)
+    private func configureUI(seriesNumber: Int = 0) {
+        mainView.configure(book: books[seriesNumber], seriesNumber: seriesNumber + 1, seriesCount: books.count)
+    }
+    
+    private func updateUI(seriesNumber: Int) {
+        mainView.configure(book: books[seriesNumber], seriesNumber: seriesNumber + 1)
     }
 
     private func showAlert(message: String) {
@@ -61,5 +65,15 @@ final class MainViewController: UIViewController {
         }))
         self.present(alert, animated: true)
     }
+    
+    private func configureDelegate() {
+        mainView.bookHeaderView.delegate = self
+    }
 
+}
+
+extension MainViewController: BookHeaderViewDelegate {
+    func didTapSeriesButton(withTag tag: Int) {
+        updateUI(seriesNumber: tag)
+    }
 }
