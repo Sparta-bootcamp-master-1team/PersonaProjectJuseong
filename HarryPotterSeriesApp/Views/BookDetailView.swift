@@ -5,8 +5,6 @@
 //  Created by 박주성 on 3/28/25.
 //
 
-
-// BookDetailView.swift
 import UIKit
 import SnapKit
 
