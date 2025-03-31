@@ -92,7 +92,7 @@ final class MainView: UIView {
             pages: book.pages
         )
         dedicationView.configure(dedication: book.dedication)
-        summaryView.configure(summary: book.summary)
+        summaryView.configure(summary: book.summary, series: seriesNumber)
         chapterView.configure(chapters: book.chapters.map { $0.title })
     }
 }

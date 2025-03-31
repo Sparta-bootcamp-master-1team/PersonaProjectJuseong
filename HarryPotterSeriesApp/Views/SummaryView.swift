@@ -44,9 +44,11 @@ final class SummaryView: UIView {
         return button
     }()
     
+    private var series: Int = 0
+    
     private var isExpanded: Bool {
-        get { UserDefaults.standard.bool(forKey: "SummaryViewIsExpanded") }
-        set { UserDefaults.standard.set(newValue, forKey: "SummaryViewIsExpanded") }
+        get { UserDefaults.standard.bool(forKey: "\(series)" + "SeriesSummaryView") }
+        set { UserDefaults.standard.set(newValue, forKey: "\(series)" + "SeriesSummaryView") }
     }
     
     private var fullSummary: String = ""
@@ -89,8 +91,9 @@ final class SummaryView: UIView {
         toggleButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
     }
         
-    func configure(summary: String) {
-        fullSummary = summary
+    func configure(summary: String, series: Int) {
+        self.fullSummary = summary
+        self.series = series
         
         if summary.count < 450 {
             toggleContainerView.isHidden = true
