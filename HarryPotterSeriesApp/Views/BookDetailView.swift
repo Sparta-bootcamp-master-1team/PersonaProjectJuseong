@@ -133,11 +133,25 @@ final class BookDetailView: UIView {
         }
     }
     
+    private func formattedDate(from dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let date = inputFormatter.date(from: dateString) else {
+            return "정보 없음"
+        }
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "MMMM dd, yyyy"
+        
+        return outputFormatter.string(from: date)
+    }
+
     func configure(coverImageName: String, title: String, author: String, released: String, pages: Int) {
         coverImageView.image = UIImage(named: coverImageName)
         detailBookTitleLabel.text = title
         authorLabel.text = author
-        releasedLabel.text = released
+        releasedLabel.text = formattedDate(from: released)
         pagesLabel.text = "\(pages)"
     }
 }
