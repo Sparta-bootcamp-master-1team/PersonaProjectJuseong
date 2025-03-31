@@ -14,6 +14,13 @@ final class MainViewController: UIViewController {
     private let dataService = DataService()
     private var books: [Attributes] = []
     
+    private var selectedSeries: Int = 0
+    
+    private var isExpanded: Bool {
+        get { UserDefaults.standard.bool(forKey: "\(selectedSeries)" + "SeriesSummaryView") }
+        set { UserDefaults.standard.set(newValue, forKey: "\(selectedSeries)" + "SeriesSummaryView") }
+    }
+    
     override func loadView() {
         self.view = mainView
     }
@@ -21,7 +28,7 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadBooks()
-        configureDelegate()
+        setupAddTarget()
     }
     
     private func loadBooks() {
@@ -31,7 +38,7 @@ final class MainViewController: UIViewController {
             switch result {
             case .success(let books):
                 self.books = books
-                configureUI()
+                configureUI(seriesNumber: selectedSeries, booksCount: books.count)
             case .failure(let error):
                 var errorMessage = ""
                 
@@ -49,12 +56,19 @@ final class MainViewController: UIViewController {
         }
     }
     
-    private func configureUI(seriesNumber: Int = 0) {
-        mainView.configure(book: books[seriesNumber], seriesNumber: seriesNumber + 1, seriesCount: books.count)
-    }
-    
-    private func updateUI(seriesNumber: Int) {
-        mainView.configure(book: books[seriesNumber], seriesNumber: seriesNumber + 1)
+    private func configureUI(seriesNumber: Int, booksCount: Int) {
+        let book = books[seriesNumber]
+        mainView.bookHeaderView.configure(title: book.title, series: seriesNumber + 1, count: booksCount)
+        mainView.bookDetailView.configure(
+            coverImageName: "harrypotter" + "\(seriesNumber + 1)",
+            title: book.title,
+            author: book.author,
+            released: book.releaseDate,
+            pages: book.pages
+        )
+        mainView.dedicationView.configure(dedication: book.dedication)
+        mainView.summaryView.configure(summary: book.summary, series: seriesNumber + 1, isExpaned: isExpanded)
+        mainView.chapterView.configure(chapters: book.chapters.map { $0.title })
     }
 
     private func showAlert(message: String) {
@@ -66,14 +80,22 @@ final class MainViewController: UIViewController {
         self.present(alert, animated: true)
     }
     
-    private func configureDelegate() {
-        mainView.bookHeaderView.delegate = self
+    private func setupAddTarget() {
+        mainView.bookHeaderView.seriesButtons.forEach { button in
+            button.addTarget(self, action: #selector(didTapSeriesButton(_:)), for: .touchUpInside)
+        }
+        mainView.summaryView.toggleButton.addTarget(self, action: #selector(didTapSummaryViewToggleButton), for: .touchUpInside)
     }
-
-}
-
-extension MainViewController: BookHeaderViewDelegate {
-    func didTapSeriesButton(withTag tag: Int) {
-        updateUI(seriesNumber: tag)
+    
+    @objc
+    private func didTapSummaryViewToggleButton() {
+        self.isExpanded.toggle()
+        mainView.summaryView.updateSummary(isExpanded: isExpanded, fullSummary: books[selectedSeries].summary)
+    }
+    
+    @objc
+    private func didTapSeriesButton(_ sender: UIButton) {
+        self.selectedSeries = sender.tag
+        configureUI(seriesNumber: selectedSeries, booksCount: 0)
     }
 }

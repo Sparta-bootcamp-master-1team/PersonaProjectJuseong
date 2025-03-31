@@ -8,13 +8,7 @@
 import UIKit
 import SnapKit
 
-protocol BookHeaderViewDelegate: AnyObject {
-    func didTapSeriesButton(withTag tag: Int)
-}
-
 final class BookHeaderView: UIView {
-    
-    weak var delegate: BookHeaderViewDelegate?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +28,7 @@ final class BookHeaderView: UIView {
         return stackView
     }()
     
-    private var seriesButtons: [UIButton] = []
+    private(set) var seriesButtons: [UIButton] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -90,7 +84,6 @@ final class BookHeaderView: UIView {
         let configuration = createButtonConfiguration(for: tag)
         let button = UIButton(configuration: configuration)
         button.tag = tag
-        button.addTarget(self, action: #selector(seriesButtonTapped(_:)), for: .touchUpInside)
         
         button.snp.makeConstraints {
             $0.width.lessThanOrEqualTo(40)
@@ -108,9 +101,5 @@ final class BookHeaderView: UIView {
         config.attributedTitle = AttributedString("\(tag + 1)", attributes: attributes)
         
         return config
-    }
-    
-    @objc private func seriesButtonTapped(_ sender: UIButton) {
-        delegate?.didTapSeriesButton(withTag: sender.tag)
     }
 }

@@ -11,7 +11,7 @@ import SnapKit
 
 final class MainView: UIView {
     
-    private(set) var bookHeaderView = BookHeaderView()
+    let bookHeaderView = BookHeaderView()
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -20,10 +20,10 @@ final class MainView: UIView {
     }()
     private let contentView = UIView()
     
-    private let bookDetailView = BookDetailView()
-    private let dedicationView = DedicationView()
-    private let summaryView = SummaryView()
-    private let chapterView = ChapterView()
+    let bookDetailView = BookDetailView()
+    let dedicationView = DedicationView()
+    let summaryView = SummaryView()
+    let chapterView = ChapterView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,19 +80,5 @@ final class MainView: UIView {
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview()
         }
-    }
-    
-    func configure(book: Attributes, seriesNumber: Int, seriesCount: Int = 0) {
-        bookHeaderView.configure(title: book.title, series: seriesNumber, count: seriesCount)
-        bookDetailView.configure(
-            coverImageName: "harrypotter" + "\(seriesNumber)",
-            title: book.title,
-            author: book.author,
-            released: book.releaseDate,
-            pages: book.pages
-        )
-        dedicationView.configure(dedication: book.dedication)
-        summaryView.configure(summary: book.summary, series: seriesNumber)
-        chapterView.configure(chapters: book.chapters.map { $0.title })
     }
 }
