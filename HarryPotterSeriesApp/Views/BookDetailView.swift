@@ -138,20 +138,6 @@ final class BookDetailView: UIView {
             make.height.equalTo(coverImageView.snp.width).multipliedBy(1.5)
         }
     }
-    
-    private func formattedDate(from dateString: String) -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd"
-        
-        guard let date = inputFormatter.date(from: dateString) else {
-            return "정보 없음"
-        }
-        
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "MMMM dd, yyyy"
-        
-        return outputFormatter.string(from: date)
-    }
 
     func configureUI() {
         guard let book = viewModel.selectedBook else { return }
@@ -159,7 +145,7 @@ final class BookDetailView: UIView {
         coverImageView.image = UIImage(named: "harrypotter" + "\(viewModel.selectedSeries)")
         detailBookTitleLabel.text = book.title
         authorLabel.text = book.author
-        releasedLabel.text = formattedDate(from: book.releaseDate)
+        releasedLabel.text = BookDateFormatter.formatReleaseDate(from: book.releaseDate)
         pagesLabel.text = "\(book.pages)"
     }
 }
