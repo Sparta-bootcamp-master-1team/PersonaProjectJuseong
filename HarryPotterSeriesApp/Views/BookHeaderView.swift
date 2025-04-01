@@ -56,19 +56,6 @@ final class BookHeaderView: UIView {
         }
     }
     
-    func configure(title: String, series: Int, count: Int) {
-        if count > 0 { createButtons(count: count) }
-        
-        titleLabel.text = title
-        
-        seriesButtons.forEach { button in
-            var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == series - 1 ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
-            config?.baseForegroundColor = (button.tag == series - 1 ? .white : .systemBlue)
-            button.configuration = config
-        }
-    }
-    
     private func createButtons(count: Int) {
         seriesButtons.forEach { $0.removeFromSuperview() }
         seriesButtons.removeAll()
@@ -101,5 +88,18 @@ final class BookHeaderView: UIView {
         config.attributedTitle = AttributedString("\(tag + 1)", attributes: attributes)
         
         return config
+    }
+    
+    func configure(title: String, series: Int, count: Int) {
+        if count > 0 { createButtons(count: count) }
+        
+        titleLabel.text = title
+        
+        seriesButtons.forEach { button in
+            var config = button.configuration
+            config?.baseBackgroundColor = (button.tag == series - 1 ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
+            config?.baseForegroundColor = (button.tag == series - 1 ? .white : .systemBlue)
+            button.configuration = config
+        }
     }
 }

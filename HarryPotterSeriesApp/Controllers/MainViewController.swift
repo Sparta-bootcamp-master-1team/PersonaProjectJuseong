@@ -11,14 +11,13 @@ final class MainViewController: UIViewController {
 
     private let mainView = MainView()
     
-    private let dataService = DataService()
     private var books: [Attributes] = []
     
     private var selectedSeries: Int = 0
     
     private var isExpanded: Bool {
-        get { UserDefaults.standard.bool(forKey: "\(selectedSeries)" + "SeriesSummaryView") }
-        set { UserDefaults.standard.set(newValue, forKey: "\(selectedSeries)" + "SeriesSummaryView") }
+        get { UserDefaults.standard.bool(forKey: "\(selectedSeries)" + "SeriesSummaryIsExpanded") }
+        set { UserDefaults.standard.set(newValue, forKey: "\(selectedSeries)" + "SeriesSummaryIsExpanded") }
     }
     
     override func loadView() {
@@ -32,9 +31,7 @@ final class MainViewController: UIViewController {
     }
     
     private func loadBooks() {
-        dataService.loadBooks { [weak self] result in
-            guard let self = self else { return }
-            
+        DataService.loadBooks { result in
             switch result {
             case .success(let books):
                 self.books = books

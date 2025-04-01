@@ -45,6 +45,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Author
     private lazy var authorStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [authorTitleLabel, authorLabel])
         stackView.axis = .horizontal
@@ -67,6 +68,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Released
     private lazy var releasedStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [releasedTitleLabel, releasedLabel])
         stackView.axis = .horizontal
@@ -89,6 +91,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Pages
     private lazy var pagesStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [pagesTitleLabel, pagesLabel])
         stackView.axis = .horizontal

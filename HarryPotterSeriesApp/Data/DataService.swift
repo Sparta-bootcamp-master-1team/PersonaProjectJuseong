@@ -8,14 +8,14 @@
 
 import Foundation
 
-class DataService {
+final class DataService {
     
     enum DataError: Error {
         case fileNotFound
         case parsingFailed
     }
     
-    func loadBooks(completion: @escaping (Result<[Attributes], Error>) -> Void) {
+    static func loadBooks(completion: (Result<[Attributes], Error>) -> Void) {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
             completion(.failure(DataError.fileNotFound))
             return

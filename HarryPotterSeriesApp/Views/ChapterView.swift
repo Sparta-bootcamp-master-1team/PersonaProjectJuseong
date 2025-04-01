@@ -44,6 +44,14 @@ final class ChapterView: UIView {
         }
     }
     
+    private func createChapterLabel() -> UILabel {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .darkGray
+        label.numberOfLines = 0
+        return label
+    }
+    
     func configure(chapters: [String]) {
         chapterLabels.forEach { $0.removeFromSuperview() }
         chapterLabels.removeAll()
@@ -54,13 +62,5 @@ final class ChapterView: UIView {
             chapterLabels.append(chapterLabel)
             chapterStackView.addArrangedSubview(chapterLabel)
         }
-    }
-    
-    private func createChapterLabel() -> UILabel {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .darkGray
-        label.numberOfLines = 0
-        return label
     }
 }
