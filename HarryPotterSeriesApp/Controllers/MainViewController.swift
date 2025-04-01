@@ -8,7 +8,7 @@
 import UIKit
 
 final class MainViewController: UIViewController {
-
+    
     private let mainView = MainView()
     
     private var books: [Attributes] = []
@@ -27,28 +27,31 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         loadBooks()
-        setupAddTarget()
     }
     
     private func loadBooks() {
-        DataService.loadBooks { result in
-            switch result {
-            case .success(let books):
-                self.books = books
-                configureUI(seriesNumber: selectedSeries, booksCount: books.count)
-            case .failure(let error):
+        Task {
+            do {
+                let books = try await DataService.loadBooks()
+                await MainActor.run {
+                    self.books = books
+                    configureUI(seriesNumber: selectedSeries, booksCount: books.count)
+                    setupAddTarget()
+                }
+            } catch {
                 var errorMessage = ""
-                
                 if let dataError = error as? DataService.DataError {
                     switch dataError {
                     case .fileNotFound:
-                        errorMessage = "Json 파일을 찾을 수 없습니다."
+                        errorMessage = "JSON 파일을 찾을 수 없습니다. 파일이 올바른 위치에 있는지 확인해주세요."
+                    case .dataConversionFailed:
+                        errorMessage = "파일 데이터를 읽어오는데 실패했습니다. 파일이 손상되었거나 형식이 올바른지 확인해주세요."
                     case .parsingFailed:
-                        errorMessage = "데이터 변환에 실패하였습니다."
+                        errorMessage = "JSON 데이터를 파싱하는데 실패했습니다. 파일의 형식이 올바른지 확인해주세요."
                     }
                 }
                 
-                DispatchQueue.main.async { self.showAlert(message: errorMessage) }
+                await MainActor.run { showAlert(message: errorMessage) }
             }
         }
     }
@@ -67,7 +70,7 @@ final class MainViewController: UIViewController {
         mainView.summaryView.configure(summary: book.summary, series: seriesNumber + 1, isExpaned: isExpanded)
         mainView.chapterView.configure(chapters: book.chapters.map { $0.title })
     }
-
+    
     private func showAlert(message: String) {
         view = UIView()
         let alert = UIAlertController(title: "에러", message: message, preferredStyle: .alert)
