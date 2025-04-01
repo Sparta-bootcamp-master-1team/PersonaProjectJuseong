@@ -12,23 +12,24 @@ final class DataService {
     
     enum DataError: Error {
         case fileNotFound
+        case dataConversionFailed
         case parsingFailed
     }
     
-    static func loadBooks(completion: (Result<[Attributes], Error>) -> Void) {
+    static func loadBooks() async throws -> [Attributes] {
         guard let path = Bundle.main.path(forResource: "data", ofType: "json") else {
-            completion(.failure(DataError.fileNotFound))
-            return
+            throw DataError.fileNotFound
         }
         
-        do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path))
-            let bookResponse = try JSONDecoder().decode(BookResponse.self, from: data)
-            let books = bookResponse.data.map { $0.attributes }
-            completion(.success(books))
-        } catch {
-            print("🚨 JSON 파싱 에러 : \(error)")
-            completion(.failure(DataError.parsingFailed))
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path)) else {
+            throw DataError.dataConversionFailed
         }
+        
+        guard let bookResponse = try? JSONDecoder().decode(BookResponse.self, from: data) else {
+            throw DataError.parsingFailed
+        }
+        
+        let books = bookResponse.data.map { $0.attributes }
+        return books
     }
 }

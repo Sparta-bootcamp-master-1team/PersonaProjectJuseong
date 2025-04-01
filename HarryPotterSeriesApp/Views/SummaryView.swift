@@ -10,6 +10,8 @@ import SnapKit
 
 final class SummaryView: UIView {
     
+    private let viewModel: MainViewModel
+    
     private lazy var summaryStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [summaryTitleLabel, summaryLabel, toggleContainerView])
@@ -44,9 +46,11 @@ final class SummaryView: UIView {
         return button
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupUI()
+        setupAddTarget()
     }
     
     required init?(coder: NSCoder) {
@@ -66,18 +70,32 @@ final class SummaryView: UIView {
         }
     }
     
-    func updateSummary(isExpanded: Bool, fullSummary: String) {
-        summaryLabel.text = isExpanded ? fullSummary : String(fullSummary.prefix(450)) + "..."
-        toggleButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
+    private func setupAddTarget() {
+        toggleButton.addTarget(self, action: #selector(didTapSummaryViewToggleButton), for: .touchUpInside)
+    }
+    
+    @objc
+    private func didTapSummaryViewToggleButton() {
+        viewModel.toggleSummary()
+        updateSummary()
+    }
+    
+    func updateSummary() {
+        guard let book = viewModel.selectedBook else { return }
+
+        summaryLabel.text = viewModel.isExpanded ? book.summary : String(book.summary.prefix(450)) + "..."
+        toggleButton.setTitle(viewModel.isExpanded ? "접기" : "더 보기", for: .normal)
     }
         
-    func configure(summary: String, series: Int, isExpaned: Bool) {
-        if summary.count < 450 {
+    func configureUI() {
+        guard let book = viewModel.selectedBook else { return }
+        
+        if book.summary.count < 450 {
             toggleContainerView.isHidden = true
-            summaryLabel.text = summary
+            summaryLabel.text = book.summary
         } else {
             toggleContainerView.isHidden = false
-            updateSummary(isExpanded: isExpaned, fullSummary: summary)
+            updateSummary()
         }
     }
 }

@@ -10,6 +10,8 @@ import SnapKit
 
 final class DedicationView: UIView {
     
+    private let viewModel: MainViewModel
+    
     private lazy var dedicationStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [dedicationTitleLabel, dedicationLabel])
         stackView.axis = .vertical
@@ -33,8 +35,9 @@ final class DedicationView: UIView {
         return label
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupUI()
     }
     
@@ -50,7 +53,9 @@ final class DedicationView: UIView {
         }
     }
     
-    func configure(dedication: String) {
-        dedicationLabel.text = dedication
+    func configureUI() {
+        guard let book = viewModel.selectedBook else { return }
+
+        dedicationLabel.text = book.dedication
     }
 }

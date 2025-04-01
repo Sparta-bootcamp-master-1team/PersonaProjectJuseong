@@ -11,7 +11,7 @@ import SnapKit
 
 final class MainView: UIView {
     
-    let bookHeaderView = BookHeaderView()
+    private let bookHeaderView: BookHeaderView
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -20,16 +20,21 @@ final class MainView: UIView {
     }()
     private let contentView = UIView()
     
-    let bookDetailView = BookDetailView()
-    let dedicationView = DedicationView()
-    let summaryView = SummaryView()
-    let chapterView = ChapterView()
+    private let bookDetailView: BookDetailView
+    private let dedicationView: DedicationView
+    private let summaryView: SummaryView
+    private let chapterView: ChapterView
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainViewModel) {
+        self.bookHeaderView = BookHeaderView(viewModel: viewModel)
+        self.bookDetailView = BookDetailView(viewModel: viewModel)
+        self.dedicationView = DedicationView(viewModel: viewModel)
+        self.summaryView = SummaryView(viewModel: viewModel)
+        self.chapterView = ChapterView(viewModel: viewModel)
+        super.init(frame: .zero)
         setupUI()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -80,5 +85,13 @@ final class MainView: UIView {
             $0.trailing.equalToSuperview().offset(-20)
             $0.bottom.equalToSuperview()
         }
+    }
+    
+    func configureUI() {
+        bookHeaderView.configureUI()
+        bookDetailView.configureUI()
+        dedicationView.configureUI()
+        summaryView.configureUI()
+        chapterView.configureUI()
     }
 }
