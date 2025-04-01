@@ -10,6 +10,8 @@ import SnapKit
 
 final class BookHeaderView: UIView {
     
+    private let viewModel: MainViewModel
+
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 24, weight: .bold)
@@ -30,8 +32,9 @@ final class BookHeaderView: UIView {
     
     private(set) var seriesButtons: [UIButton] = []
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupUI()
     }
     
@@ -60,7 +63,7 @@ final class BookHeaderView: UIView {
         seriesButtons.forEach { $0.removeFromSuperview() }
         seriesButtons.removeAll()
         
-        for i in 0..<count {
+        for i in 1...count {
             let button = createSeriesButton(withTag: i)
             seriesButtons.append(button)
             seriesButtonStackView.addArrangedSubview(button)
@@ -71,6 +74,7 @@ final class BookHeaderView: UIView {
         let configuration = createButtonConfiguration(for: tag)
         let button = UIButton(configuration: configuration)
         button.tag = tag
+        button.addTarget(self, action: #selector(didTapSeriesButton(_:)), for: .touchUpInside)
         
         button.snp.makeConstraints {
             $0.width.lessThanOrEqualTo(40)
@@ -85,20 +89,26 @@ final class BookHeaderView: UIView {
         
         var attributes = AttributeContainer()
         attributes.font = .systemFont(ofSize: 14, weight: .bold)
-        config.attributedTitle = AttributedString("\(tag + 1)", attributes: attributes)
+        config.attributedTitle = AttributedString("\(tag)", attributes: attributes)
         
         return config
     }
     
-    func configure(title: String, series: Int, count: Int) {
-        if count > 0 { createButtons(count: count) }
+    @objc
+    private func didTapSeriesButton(_ sender: UIButton) {
+        viewModel.updateSelectedSeries(tag: sender.tag)
+    }
+    
+    func configureUI() {
+        guard let book = viewModel.selectedBook else { return }
         
-        titleLabel.text = title
+        if viewModel.hasBookCountChanged { createButtons(count: viewModel.books.count) }
         
+        titleLabel.text = book.title
         seriesButtons.forEach { button in
             var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == series - 1 ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
-            config?.baseForegroundColor = (button.tag == series - 1 ? .white : .systemBlue)
+            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
+            config?.baseForegroundColor = (button.tag == viewModel.selectedSeries ? .white : .systemBlue)
             button.configuration = config
         }
     }

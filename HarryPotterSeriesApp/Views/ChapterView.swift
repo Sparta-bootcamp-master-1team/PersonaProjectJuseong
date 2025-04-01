@@ -10,6 +10,8 @@ import SnapKit
 
 final class ChapterView: UIView {
     
+    private let viewModel: MainViewModel
+    
     private lazy var chapterStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [chapterTitleLabel])
         stackView.axis = .vertical
@@ -27,8 +29,9 @@ final class ChapterView: UIView {
     
     private var chapterLabels: [UILabel] = []
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: MainViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
         setupUI()
     }
     
@@ -52,13 +55,15 @@ final class ChapterView: UIView {
         return label
     }
     
-    func configure(chapters: [String]) {
+    func configureUI() {
+        guard let book = viewModel.selectedBook else { return }
+        
         chapterLabels.forEach { $0.removeFromSuperview() }
         chapterLabels.removeAll()
         
-        for chapter in chapters {
+        for chapter in book.chapters {
             let chapterLabel = createChapterLabel()
-            chapterLabel.text = chapter
+            chapterLabel.text = chapter.title
             chapterLabels.append(chapterLabel)
             chapterStackView.addArrangedSubview(chapterLabel)
         }
