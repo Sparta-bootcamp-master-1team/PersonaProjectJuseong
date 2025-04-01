@@ -8,13 +8,7 @@
 import UIKit
 import SnapKit
 
-protocol BookHeaderViewDelegate: AnyObject {
-    func didTapSeriesButton(withTag tag: Int)
-}
-
 final class BookHeaderView: UIView {
-    
-    weak var delegate: BookHeaderViewDelegate?
     
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -34,7 +28,7 @@ final class BookHeaderView: UIView {
         return stackView
     }()
     
-    private var seriesButtons: [UIButton] = []
+    private(set) var seriesButtons: [UIButton] = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,19 +56,6 @@ final class BookHeaderView: UIView {
         }
     }
     
-    func configure(title: String, series: Int, count: Int) {
-        if count > 0 { createButtons(count: count) }
-        
-        titleLabel.text = title
-        
-        seriesButtons.forEach { button in
-            var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == series - 1 ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
-            config?.baseForegroundColor = (button.tag == series - 1 ? .white : .systemBlue)
-            button.configuration = config
-        }
-    }
-    
     private func createButtons(count: Int) {
         seriesButtons.forEach { $0.removeFromSuperview() }
         seriesButtons.removeAll()
@@ -90,7 +71,6 @@ final class BookHeaderView: UIView {
         let configuration = createButtonConfiguration(for: tag)
         let button = UIButton(configuration: configuration)
         button.tag = tag
-        button.addTarget(self, action: #selector(seriesButtonTapped(_:)), for: .touchUpInside)
         
         button.snp.makeConstraints {
             $0.width.lessThanOrEqualTo(40)
@@ -110,7 +90,16 @@ final class BookHeaderView: UIView {
         return config
     }
     
-    @objc private func seriesButtonTapped(_ sender: UIButton) {
-        delegate?.didTapSeriesButton(withTag: sender.tag)
+    func configure(title: String, series: Int, count: Int) {
+        if count > 0 { createButtons(count: count) }
+        
+        titleLabel.text = title
+        
+        seriesButtons.forEach { button in
+            var config = button.configuration
+            config?.baseBackgroundColor = (button.tag == series - 1 ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
+            config?.baseForegroundColor = (button.tag == series - 1 ? .white : .systemBlue)
+            button.configuration = config
+        }
     }
 }

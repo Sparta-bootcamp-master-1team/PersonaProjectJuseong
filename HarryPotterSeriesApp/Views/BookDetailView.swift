@@ -45,6 +45,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Author
     private lazy var authorStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [authorTitleLabel, authorLabel])
         stackView.axis = .horizontal
@@ -67,6 +68,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Released
     private lazy var releasedStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [releasedTitleLabel, releasedLabel])
         stackView.axis = .horizontal
@@ -89,6 +91,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Pages
     private lazy var pagesStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [pagesTitleLabel, pagesLabel])
         stackView.axis = .horizontal
@@ -133,11 +136,25 @@ final class BookDetailView: UIView {
         }
     }
     
+    private func formattedDate(from dateString: String) -> String {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        guard let date = inputFormatter.date(from: dateString) else {
+            return "정보 없음"
+        }
+        
+        let outputFormatter = DateFormatter()
+        outputFormatter.dateFormat = "MMMM dd, yyyy"
+        
+        return outputFormatter.string(from: date)
+    }
+
     func configure(coverImageName: String, title: String, author: String, released: String, pages: Int) {
         coverImageView.image = UIImage(named: coverImageName)
         detailBookTitleLabel.text = title
         authorLabel.text = author
-        releasedLabel.text = released
+        releasedLabel.text = formattedDate(from: released)
         pagesLabel.text = "\(pages)"
     }
 }

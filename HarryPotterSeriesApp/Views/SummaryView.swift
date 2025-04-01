@@ -36,7 +36,7 @@ final class SummaryView: UIView {
     
     private let toggleContainerView = UIView()
     
-    private let toggleButton: UIButton = {
+    let toggleButton: UIButton = {
         let button = UIButton()
         button.setTitle("더 보기", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
@@ -44,19 +44,9 @@ final class SummaryView: UIView {
         return button
     }()
     
-    private var series: Int = 0
-    
-    private var isExpanded: Bool {
-        get { UserDefaults.standard.bool(forKey: "\(series)" + "SeriesSummaryView") }
-        set { UserDefaults.standard.set(newValue, forKey: "\(series)" + "SeriesSummaryView") }
-    }
-    
-    private var fullSummary: String = ""
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
-        configureToggleButton()
     }
     
     required init?(coder: NSCoder) {
@@ -76,31 +66,18 @@ final class SummaryView: UIView {
         }
     }
     
-    private func configureToggleButton() {
-        toggleButton.addTarget(self, action: #selector(toggleButtonTapped), for: .touchUpInside)
-    }
-    
-    @objc
-    private func toggleButtonTapped() {
-        isExpanded.toggle()
-        updateSummary()
-    }
-    
-    private func updateSummary() {
+    func updateSummary(isExpanded: Bool, fullSummary: String) {
         summaryLabel.text = isExpanded ? fullSummary : String(fullSummary.prefix(450)) + "..."
         toggleButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
     }
         
-    func configure(summary: String, series: Int) {
-        self.fullSummary = summary
-        self.series = series
-        
+    func configure(summary: String, series: Int, isExpaned: Bool) {
         if summary.count < 450 {
             toggleContainerView.isHidden = true
-            summaryLabel.text = fullSummary
+            summaryLabel.text = summary
         } else {
             toggleContainerView.isHidden = false
-            updateSummary()
+            updateSummary(isExpanded: isExpaned, fullSummary: summary)
         }
     }
 }
