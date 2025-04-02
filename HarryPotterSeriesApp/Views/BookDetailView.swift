@@ -10,8 +10,12 @@ import SnapKit
 
 final class BookDetailView: UIView {
     
+    // 뷰에 데이터를 제공하는 뷰모델
     private let viewModel: MainViewModel
 
+    // MARK: - UI Components
+
+    // 책 커버 이미지와 상세 정보를 담는 수평 스택뷰
     private lazy var containerStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [coverImageView, detailStackView])
         stackView.axis = .horizontal
@@ -20,12 +24,14 @@ final class BookDetailView: UIView {
         return stackView
     }()
     
+    // 책 커버 이미지 뷰
     private let coverImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
+    // 책 제목, 저자, 출간일, 페이지 정보를 담는 수직 스택뷰
     private lazy var detailStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [
             detailBookTitleLabel,
@@ -38,6 +44,7 @@ final class BookDetailView: UIView {
         return stackView
     }()
     
+    // 책 제목 라벨
     private let detailBookTitleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
@@ -46,7 +53,9 @@ final class BookDetailView: UIView {
         return label
     }()
     
-    // MARK: - Author
+    // MARK: - Author UI
+
+    // 저자 타이틀과 저자명을 담는 수평 스택뷰
     private lazy var authorStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [authorTitleLabel, authorLabel])
         stackView.axis = .horizontal
@@ -54,6 +63,7 @@ final class BookDetailView: UIView {
         return stackView
     }()
     
+    // "Author" 타이틀 라벨
     private let authorTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Author"
@@ -64,6 +74,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // 실제 저자명 표시 라벨
     private let authorLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .regular)
@@ -71,7 +82,9 @@ final class BookDetailView: UIView {
         return label
     }()
     
-    // MARK: - Released
+    // MARK: - Released UI
+
+    // 출간일 타이틀과 날짜를 담는 수평 스택뷰
     private lazy var releasedStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [releasedTitleLabel, releasedLabel])
         stackView.axis = .horizontal
@@ -79,6 +92,7 @@ final class BookDetailView: UIView {
         return stackView
     }()
     
+    // "Released" 타이틀 라벨
     private let releasedTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Released"
@@ -89,6 +103,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // 실제 출간일 표시 라벨
     private let releasedLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -96,7 +111,9 @@ final class BookDetailView: UIView {
         return label
     }()
     
-    // MARK: - Pages
+    // MARK: - Pages UI
+
+    // 페이지 수 타이틀과 값을 담는 수평 스택뷰
     private lazy var pagesStackView: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [pagesTitleLabel, pagesLabel])
         stackView.axis = .horizontal
@@ -104,6 +121,7 @@ final class BookDetailView: UIView {
         return stackView
     }()
     
+    // "Pages" 타이틀 라벨
     private let pagesTitleLabel: UILabel = {
         let label = UILabel()
         label.text = "Pages"
@@ -114,6 +132,7 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // 실제 페이지 수 표시 라벨
     private let pagesLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 14, weight: .regular)
@@ -121,6 +140,9 @@ final class BookDetailView: UIView {
         return label
     }()
     
+    // MARK: - Initializer
+
+    // 뷰모델 주입을 통해 초기화
     init(viewModel: MainViewModel) {
         self.viewModel = viewModel
         super.init(frame: .zero)
@@ -131,6 +153,9 @@ final class BookDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - UI Setup
+
+    // UI 구성 및 제약 조건 설정
     private func setupUI() {
         self.addSubview(containerStackView)
         
@@ -144,6 +169,9 @@ final class BookDetailView: UIView {
         }
     }
 
+    // MARK: - Configuration
+
+    // 뷰모델 데이터를 기반으로 UI 구성
     func configureUI() {
         guard let book = viewModel.selectedBook else { return }
         
