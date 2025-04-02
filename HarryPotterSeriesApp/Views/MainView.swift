@@ -47,13 +47,14 @@ final class MainView: UIView {
         [bookDetailView, dedicationView, summaryView, chapterView].forEach { contentView.addSubview($0) }
         
         bookHeaderView.snp.makeConstraints {
-            $0.top.equalTo(self.safeAreaLayoutGuide.snp.top).offset(10)
-            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(self.safeAreaLayoutGuide).offset(10)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         scrollView.snp.makeConstraints {
             $0.top.equalTo(bookHeaderView.snp.bottom).offset(16)
-            $0.leading.trailing.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
+            $0.bottom.equalTo(self.safeAreaLayoutGuide)
         }
         
         contentView.snp.makeConstraints {
@@ -63,26 +64,22 @@ final class MainView: UIView {
         
         bookDetailView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         dedicationView.snp.makeConstraints {
             $0.top.equalTo(bookDetailView.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         summaryView.snp.makeConstraints {
             $0.top.equalTo(dedicationView.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
         }
         
         chapterView.snp.makeConstraints {
             $0.top.equalTo(summaryView.snp.bottom).offset(24)
-            $0.leading.equalToSuperview().offset(20)
-            $0.trailing.equalToSuperview().offset(-20)
+            $0.horizontalEdges.equalToSuperview().inset(20)
             $0.bottom.equalToSuperview()
         }
     }

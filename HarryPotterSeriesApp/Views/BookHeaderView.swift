@@ -46,16 +46,16 @@ final class BookHeaderView: UIView {
         [titleLabel, seriesButtonStackView].forEach { self.addSubview($0) }
         
         titleLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(20)
+            $0.top.equalToSuperview()
+            $0.horizontalEdges.equalToSuperview()
         }
         
         seriesButtonStackView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(16)
-            $0.leading.greaterThanOrEqualToSuperview().offset(20)
-            $0.trailing.lessThanOrEqualToSuperview().offset(-20)
             $0.bottom.equalToSuperview()
-            $0.centerX.equalToSuperview()
+            $0.width.lessThanOrEqualToSuperview()
             $0.height.equalTo(40)
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -77,7 +77,7 @@ final class BookHeaderView: UIView {
         button.addTarget(self, action: #selector(didTapSeriesButton(_:)), for: .touchUpInside)
         
         button.snp.makeConstraints {
-            $0.width.lessThanOrEqualTo(40)
+            $0.width.equalTo(40).priority(.high)
             $0.height.equalTo(button.snp.width)
         }
         return button
@@ -107,7 +107,7 @@ final class BookHeaderView: UIView {
         titleLabel.text = book.title
         seriesButtons.forEach { button in
             var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
+            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : .systemGray5)
             config?.baseForegroundColor = (button.tag == viewModel.selectedSeries ? .white : .systemBlue)
             button.configuration = config
         }
