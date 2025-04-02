@@ -5,21 +5,20 @@
 //  Created by 박주성 on 3/27/25.
 //
 
-
 import Foundation
 
 // MARK: - BookResponse
-struct BookResponse: Codable {
+struct BookResponse: Decodable {
     let data: [Datum]
 }
 
 // MARK: - Datum
-struct Datum: Codable {
+struct Datum: Decodable {
     let attributes: Attributes
 }
 
 // MARK: - Attributes
-struct Attributes: Codable {
+struct Attributes: Decodable {
     let title, author: String
     let pages: Int
     let releaseDate, dedication, summary: String
@@ -34,6 +33,6 @@ struct Attributes: Codable {
 }
 
 // MARK: - Chapter
-struct Chapter: Codable {
+struct Chapter: Decodable {
     let title: String
 }

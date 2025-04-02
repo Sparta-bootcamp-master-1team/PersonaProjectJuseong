@@ -54,6 +54,8 @@ final class MainViewModel {
     }
     
     func updateSelectedSeries(tag series: Int) {
+        guard selectedSeries != series else { return }
+        
         selectedSeries = series
         hasBookCountChanged = false
         onBookChanged()
