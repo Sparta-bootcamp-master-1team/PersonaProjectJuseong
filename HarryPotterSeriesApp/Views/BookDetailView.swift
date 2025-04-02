@@ -35,7 +35,6 @@ final class BookDetailView: UIView {
         ])
         stackView.axis = .vertical
         stackView.spacing = 8
-        stackView.alignment = .leading
         return stackView
     }()
     
@@ -60,6 +59,8 @@ final class BookDetailView: UIView {
         label.text = "Author"
         label.font = .systemFont(ofSize: 16, weight: .bold)
         label.textColor = .black
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
@@ -83,6 +84,8 @@ final class BookDetailView: UIView {
         label.text = "Released"
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .black
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
@@ -106,6 +109,8 @@ final class BookDetailView: UIView {
         label.text = "Pages"
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .black
+        label.setContentHuggingPriority(.required, for: .horizontal)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
         return label
     }()
     
