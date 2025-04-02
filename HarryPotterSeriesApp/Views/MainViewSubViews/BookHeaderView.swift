@@ -107,7 +107,7 @@ final class BookHeaderView: UIView {
         config.cornerStyle = .capsule
         
         var attributes = AttributeContainer()
-        attributes.font = .systemFont(ofSize: 14, weight: .bold)
+        attributes.font = .systemFont(ofSize: 16, weight: .bold)
         config.attributedTitle = AttributedString("\(tag)", attributes: attributes)
         
         return config
@@ -138,7 +138,7 @@ final class BookHeaderView: UIView {
         // 선택된 시리즈에 따라 버튼 색상 업데이트
         seriesButtons.forEach { button in
             var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : .systemGray5)
+            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
             config?.baseForegroundColor = (button.tag == viewModel.selectedSeries ? .white : .systemBlue)
             button.configuration = config
         }
