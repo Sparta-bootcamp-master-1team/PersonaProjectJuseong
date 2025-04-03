@@ -73,38 +73,37 @@ final class MainView: UIView {
         // scrollView 오토레이아웃 제약 조건 설정
         scrollView.snp.makeConstraints {
             $0.top.equalTo(bookHeaderView.snp.bottom).offset(16)
-            $0.horizontalEdges.equalTo(self.safeAreaLayoutGuide)
-            $0.bottom.equalTo(self.safeAreaLayoutGuide)
+            $0.horizontalEdges.equalToSuperview()
+            $0.bottom.equalToSuperview()
         }
         
         // contentView 오토레이아웃 제약 조건 설정
         contentView.snp.makeConstraints {
-            $0.edges.equalTo(scrollView.contentLayoutGuide)
-            $0.width.equalTo(scrollView.frameLayoutGuide)
+            $0.verticalEdges.equalTo(scrollView.contentLayoutGuide)
+            $0.horizontalEdges.equalTo(self.safeAreaLayoutGuide).inset(20)
         }
-        
         // bookDetailView 오토레이아웃 제약 조건 설정
         bookDetailView.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         // dedicationView 오토레이아웃 제약 조건 설정
         dedicationView.snp.makeConstraints {
             $0.top.equalTo(bookDetailView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         // summaryView 오토레이아웃 제약 조건 설정
         summaryView.snp.makeConstraints {
             $0.top.equalTo(dedicationView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
         }
         
         // chapterView 오토레이아웃 제약 조건 설정
         chapterView.snp.makeConstraints {
             $0.top.equalTo(summaryView.snp.bottom).offset(24)
-            $0.horizontalEdges.equalToSuperview().inset(20)
+            $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
     }
