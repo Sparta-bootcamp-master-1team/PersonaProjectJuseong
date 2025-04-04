@@ -39,6 +39,8 @@ final class MainViewModel {
     // 책 정보가 변경되었을 때 실행될 클로저 (UI 업데이트 등에 사용)
     var onBookChanged: (() -> Void) = { }
     
+    var onSummaryExpandedChanged: (() -> Void) = { }
+    
     // 에러 발생 시 실행될 클로저 (에러 메시지를 UI에 표시하는데 사용)
     var onError: ((String) -> Void) = { _ in }
     
@@ -100,5 +102,6 @@ final class MainViewModel {
     /// 요약 정보의 확장/축소 상태를 토글하는 함수
     func toggleSummary() {
         isExpanded.toggle()
+        onSummaryExpandedChanged()
     }
 }
