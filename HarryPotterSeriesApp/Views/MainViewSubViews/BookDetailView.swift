@@ -10,9 +10,6 @@ import SnapKit
 
 final class BookDetailView: UIView {
     
-    // 뷰에 데이터를 제공하는 뷰모델
-    private let viewModel: MainViewModel
-
     // MARK: - UI Components
 
     // 책 커버 이미지와 상세 정보를 담는 수평 스택뷰
@@ -142,9 +139,7 @@ final class BookDetailView: UIView {
     
     // MARK: - Initializer
 
-    // 뷰모델 주입을 통해 초기화
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         setupUI()
     }
@@ -172,10 +167,8 @@ final class BookDetailView: UIView {
     // MARK: - Configuration
 
     // 뷰모델 데이터를 기반으로 UI 구성
-    func configureUI() {
-        guard let book = viewModel.selectedBook else { return }
-        
-        coverImageView.image = UIImage(named: "harrypotter" + "\(viewModel.selectedSeries)")
+    func configureUI(book: Attributes, series: Int) {
+        coverImageView.image = UIImage(named: "harrypotter" + "\(series)")
         detailBookTitleLabel.text = book.title
         authorLabel.text = book.author
         releasedLabel.text = BookDateFormatter.formatReleaseDate(from: book.releaseDate)

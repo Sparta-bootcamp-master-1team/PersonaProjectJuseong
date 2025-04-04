@@ -8,10 +8,14 @@
 import UIKit
 import SnapKit
 
+@MainActor
+protocol SummaryViewDelegate: AnyObject {
+    func didTapToggle()
+}
+
 final class SummaryView: UIView {
     
-    // 뷰에 데이터를 제공하는 뷰모델
-    private let viewModel: MainViewModel
+    weak var delegate: SummaryViewDelegate?
     
     // MARK: - UI Components
 
@@ -46,7 +50,7 @@ final class SummaryView: UIView {
     private let toggleContainerView = UIView()
     
     // 요약을 확장하거나 축소할 수 있는 버튼
-    let toggleButton: UIButton = {
+    private let toggleButton: UIButton = {
         let button = UIButton()
         button.setTitle("더 보기", for: .normal)
         button.setTitleColor(.systemBlue, for: .normal)
@@ -56,9 +60,7 @@ final class SummaryView: UIView {
     
     // MARK: - Initializer
 
-    // 뷰모델을 주입받아 초기화
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         setupUI()
         setupAddTarget()
@@ -94,31 +96,26 @@ final class SummaryView: UIView {
     // "더 보기 / 접기" 버튼 클릭 시 실행되는 메서드
     @objc
     private func didTapSummaryViewToggleButton() {
-        viewModel.toggleSummary()
-        updateSummary()
+        delegate?.didTapToggle()
     }
 
     // 현재 확장 상태에 따라 요약 텍스트와 버튼 타이틀 업데이트
-    func updateSummary() {
-        guard let book = viewModel.selectedBook else { return }
-
-        summaryLabel.text = viewModel.isExpanded ? book.summary : String(book.summary.prefix(450)) + "..."
-        toggleButton.setTitle(viewModel.isExpanded ? "접기" : "더 보기", for: .normal)
+    func updateSummary(summary: String, isExpanded: Bool) {
+        summaryLabel.text = isExpanded ? summary : String(summary.prefix(450)) + "..."
+        toggleButton.setTitle(isExpanded ? "접기" : "더 보기", for: .normal)
     }
 
     // MARK: - Configuration
 
     // 요약 데이터를 기반으로 초기 UI 구성
-    func configureUI() {
-        guard let book = viewModel.selectedBook else { return }
-        
+    func configureUI(summary: String, isExpanded: Bool) {
         // 요약 길이가 짧으면 버튼 숨김 처리
-        if book.summary.count < 450 {
+        if summary.count < 450 {
             toggleContainerView.isHidden = true
-            summaryLabel.text = book.summary
+            summaryLabel.text = summary
         } else {
             toggleContainerView.isHidden = false
-            updateSummary()
+            updateSummary(summary: summary, isExpanded: isExpanded)
         }
     }
 }

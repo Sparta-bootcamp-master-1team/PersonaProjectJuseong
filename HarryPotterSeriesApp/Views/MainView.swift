@@ -11,7 +11,7 @@ import SnapKit
 final class MainView: UIView {
     
     // 시리즈 선택버튼과 타이틀을 표시하는 헤더 뷰
-    private let bookHeaderView: BookHeaderView
+    let bookHeaderView = BookHeaderView()
     
     // MARK: - UI Components
 
@@ -23,26 +23,20 @@ final class MainView: UIView {
     }()
     
     // 스크롤 뷰 내부에 포함되는 컨텐츠 뷰
-    private let contentView = UIView()
+    let contentView = UIView()
     
     // 책 상세 정보를 표시하는 뷰
-    private let bookDetailView: BookDetailView
+    let bookDetailView = BookDetailView()
     // 헌사를 표시하는 뷰
-    private let dedicationView: DedicationView
+    let dedicationView = DedicationView()
     // 요약 정보를 표시하는 뷰
-    private let summaryView: SummaryView
+    let summaryView = SummaryView()
     // 챕터 목록을 표시하는 뷰
-    private let chapterView: ChapterView
+    let chapterView = ChapterView()
     
     // MARK: - Initializer
 
-    // 모든 서브뷰에 동일한 ViewModel을 주입하여 초기화
-    init(viewModel: MainViewModel) {
-        self.bookHeaderView = BookHeaderView(viewModel: viewModel)
-        self.bookDetailView = BookDetailView(viewModel: viewModel)
-        self.dedicationView = DedicationView(viewModel: viewModel)
-        self.summaryView = SummaryView(viewModel: viewModel)
-        self.chapterView = ChapterView(viewModel: viewModel)
+    init() {
         super.init(frame: .zero)
         setupUI()
     }
@@ -106,16 +100,5 @@ final class MainView: UIView {
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-    }
-    
-    // MARK: - Configuration
-
-    // 모든 서브뷰에 대해 UI 구성 실행
-    func configureUI() {
-        bookHeaderView.configureUI()
-        bookDetailView.configureUI()
-        dedicationView.configureUI()
-        summaryView.configureUI()
-        chapterView.configureUI()
-    }
+    }    
 }

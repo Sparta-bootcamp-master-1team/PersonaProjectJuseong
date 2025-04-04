@@ -10,9 +10,6 @@ import SnapKit
 
 final class ChapterView: UIView {
     
-    // 뷰에 데이터를 제공하는 뷰모델
-    private let viewModel: MainViewModel
-    
     // MARK: - UI Components
 
     // 챕터 타이틀과 챕터 내용을 포함하는 수직 스택뷰
@@ -37,9 +34,7 @@ final class ChapterView: UIView {
     
     // MARK: - Initializer
 
-    // 뷰모델을 주입받아 초기화
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         setupUI()
     }
@@ -73,17 +68,15 @@ final class ChapterView: UIView {
     // MARK: - Configuration
 
     // 뷰모델 데이터를 기반으로 챕터 UI 구성
-    func configureUI() {
-        guard let book = viewModel.selectedBook else { return }
-        
+    func configureUI(chapters: [String]) {
         // 기존 챕터 라벨 제거
         chapterLabels.forEach { $0.removeFromSuperview() }
         chapterLabels.removeAll()
         
         // 책의 각 챕터를 라벨로 생성하여 스택뷰에 추가
-        for chapter in book.chapters {
+        for chapter in chapters {
             let chapterLabel = createChapterLabel()
-            chapterLabel.text = chapter.title
+            chapterLabel.text = chapter
             chapterLabels.append(chapterLabel)
             chapterStackView.addArrangedSubview(chapterLabel)
         }

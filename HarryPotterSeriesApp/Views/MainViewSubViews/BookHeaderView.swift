@@ -8,10 +8,14 @@
 import UIKit
 import SnapKit
 
+@MainActor
+protocol BookHeaderViewDelegate: AnyObject {
+    func didTapSeriesButton(tag: Int)
+}
+
 final class BookHeaderView: UIView {
     
-    // 뷰에 데이터를 제공하는 뷰모델
-    private let viewModel: MainViewModel
+    weak var delegate: BookHeaderViewDelegate?
 
     // MARK: - UI Components
 
@@ -40,9 +44,7 @@ final class BookHeaderView: UIView {
     
     // MARK: - Initializer
 
-    // 뷰모델 주입을 통해 초기화
-    init(viewModel: MainViewModel) {
-        self.viewModel = viewModel
+    init() {
         super.init(frame: .zero)
         setupUI()
     }
@@ -118,28 +120,26 @@ final class BookHeaderView: UIView {
     // 시리즈 버튼 터치 시 호출되는 액션 메서드
     @objc
     private func didTapSeriesButton(_ sender: UIButton) {
-        viewModel.updateSelectedSeries(tag: sender.tag)
+        delegate?.didTapSeriesButton(tag: sender.tag)
     }
 
     // MARK: - Configuration
 
     // 뷰모델 데이터를 기반으로 UI 구성
-    func configureUI() {
-        guard let book = viewModel.selectedBook else { return }
-        
+    func configureUI(title: String, hasBookCountChanged: Bool, series: Int, booksCount: Int) {
         // 책 개수가 변경되었을 경우 버튼을 새로 생성
-        if viewModel.hasBookCountChanged {
-            createButtons(count: viewModel.books.count)
+        if hasBookCountChanged {
+            createButtons(count: booksCount)
         }
         
         // 타이틀 라벨 업데이트
-        titleLabel.text = book.title
+        titleLabel.text = title
         
         // 선택된 시리즈에 따라 버튼 색상 업데이트
         seriesButtons.forEach { button in
             var config = button.configuration
-            config?.baseBackgroundColor = (button.tag == viewModel.selectedSeries ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
-            config?.baseForegroundColor = (button.tag == viewModel.selectedSeries ? .white : .systemBlue)
+            config?.baseBackgroundColor = (button.tag == series ? .systemBlue : #colorLiteral(red: 0.9146044254, green: 0.9096386433, blue: 0.9269369841, alpha: 1))
+            config?.baseForegroundColor = (button.tag == series ? .white : .systemBlue)
             button.configuration = config
         }
     }
